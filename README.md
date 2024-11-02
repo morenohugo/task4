@@ -5,7 +5,7 @@ This script (`workflow.sh`) filters and processes variant data from a VCF file (
 ## Running workflow.sh
 ```bash
 # go to the working directory
-cd ...
+cd projects/unix-course-2024-2025-fix-morenohugo/
 
 # make the workflow.sh executable
 chmod +x workflow.sh
@@ -21,14 +21,14 @@ chmod +x workflow.sh
    Filter the VCF data to get only chromosome 1 and Z information, and remove the metadata (headers beginning with `##`).
 
    ```bash
-   < /data-shared/vcf_examples/luscinia_vars.vcf.gz zcat | grep -v '^##' | tail -c+2 | grep -e 'chr1\s' -e 'chrZ\s' > data_filtered.tsv
+   < /data-shared/vcf_examples/luscinia_vars.vcf.gz zcat | grep -v '^##' | tail -c+2 | grep -e 'chr1\s' -e 'chrZ\s' > results/data_filtered.tsv
 
 3. **Define INPUT**
    
    Set data_filtered.tsv as the input for all other tests
    
    ```bash
-   INPUT=data_filtered.tsv
+   INPUT=results/data_filtered.tsv
 
 5. **Check the data**
    
@@ -41,32 +41,32 @@ chmod +x workflow.sh
    
    Extract the first six columns
    ```bash
-   < $INPUT cut -f1-6 > first_six.tsv
+   < $INPUT cut -f1-6 > results/first_six.tsv
    ```
 
    Extract the read depth (DP) from the info column
    ```bash
-   < $INPUT egrep -o 'DP=[^;]*' | sed 's/DP=//' > DP.tsv
+   < $INPUT egrep -o 'DP=[^;]*' | sed 's/DP=//' > results/DP.tsv
    ```
    
    Check if the lines are INDEL or SNP
    ```bash
-   < $INPUT awk '{if($0 ~ /INDEL/) print "INDEL"; else print "SNP"}' > indel.tsv
+   < $INPUT awk '{if($0 ~ /INDEL/) print "INDEL"; else print "SNP"}' > results/indel.tsv
    ```
    
 8. **Check the data**
    
    Check if the three subsets (`first_six.tsv`, `DP.tsv`, `indel.tsv`)
    ```bash
-   wc -l first_six.tsv DP.tsv indel.tsv
+   wc -l results/first_six.tsv results/DP.tsv results/indel.tsv
    ```
 
 10. **Create the final output**
     
    Merge the three subsets and create the final output
    ```bash
-   paste first_six.tsv DP.tsv indel.tsv > results.tsv
-   echo "Output saved to results.tsv"
+   paste results/first_six.tsv results/DP.tsv results/indel.tsv > results/results.tsv
+   echo "Output saved to results/results.tsv"
    ```
 
 ## data-analysis.R
@@ -80,7 +80,7 @@ library(ggplot2)
 
 Load the data in R with explicit column names
 ```R
-d <- read_tsv("results.tsv", 
+d <- read_tsv("results/results.tsv", 
          col_names = c("CHROM", "POS", "ID", "REF", "ALT", "QUAL", "DEPTH", "TYPE")) 
 ```
 
@@ -102,7 +102,7 @@ boxplot <- ggplot(d, aes(TYPE, DEPTH, fill = TYPE)) +
   scale_y_log10()
 
 # Save the boxplot
-ggsave("boxplot_DP_TYPE_log10.png", plot = boxplot)
+ggsave("results/boxplot_DP_TYPE_log10.png", plot = boxplot)
 ```
 
 
@@ -120,7 +120,7 @@ violinplot <- ggplot(d, aes(TYPE, DEPTH, fill = TYPE)) +
   scale_y_log10()
 
 # Save the violin plot
-ggsave("violinplot_DP_TYPE_log10.png", plot = violinplot)
+ggsave("results/violinplot_DP_TYPE_log10.png", plot = violinplot)
 ```
 
 The **<ins>histogram</ins>** shows the distribution of log-transformed DP values for INDELs and SNPs. More SNPs have a lower read depth (DP) when compared to the INDELs.
@@ -136,6 +136,6 @@ histogram <- ggplot(d, aes(x = DEPTH, fill = TYPE)) +
   theme(legend.position = "top")
 
 # Save the histogram
-ggsave("histogram_DP_TYPE_density.png", plot = histogram)
+ggsave("results/histogram_DP_TYPE_density.png", plot = histogram)
 ```
 
