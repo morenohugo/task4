@@ -115,6 +115,7 @@ violinplot <- ggplot(d, aes(TYPE, DEPTH, fill = TYPE)) +
 # Save the violin plot
 ggsave("violinplot_DP_TYPE_log10.png", plot = violinplot)
 ```
+![Image of the violinplot](https://github.com/morenohugo/task4/blob/main/violinplot_DP_TYPE_log10.png)
 
 Histogram 
 ```R
@@ -128,3 +129,4 @@ histogram <- ggplot(d, aes(x = DEPTH, fill = TYPE)) +
 # Save the histogram
 ggsave("histogram_DP_TYPE_density.png", plot = histogram)
 ```
+![Image of the histogram](https://github.com/morenohugo/task4/blob/main/histogram_DP_TYPE_density.png)
