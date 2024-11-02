@@ -101,7 +101,7 @@ boxplot <- ggplot(d, aes(TYPE, DEPTH, fill = TYPE)) +
 ggsave("boxplot_DP_TYPE_log10.png", plot = boxplot)
 ```
 ![Image of the boxplot](https://github.com/morenohugo/task4/blob/main/boxplot_DP_TYPE_log10.png)
-The boxplot shows the distribution of log-transformed DP values for INDELs and SNPs. The SNPs have a lower read depth (DP) median.
+The boxplot shows the distribution of log-transformed DP values for INDELs and SNPs. The SNPs have a lower read depth (DP) median than the INDELs.
 
 **<ins>Violin plot</ins>**
 ```R
@@ -132,4 +132,4 @@ histogram <- ggplot(d, aes(x = DEPTH, fill = TYPE)) +
 ggsave("histogram_DP_TYPE_density.png", plot = histogram)
 ```
 ![Image of the histogram](https://github.com/morenohugo/task4/blob/main/histogram_DP_TYPE_density.png)
-The histogram shows the distribution of log-transformed DP values for INDELs and SNPs. More of the SNP entries have a lower read depth (DP).
+The histogram shows the distribution of log-transformed DP values for INDELs and SNPs. More SNPs have a lower read depth (DP) when compared to the INDELs.
