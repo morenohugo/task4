@@ -100,6 +100,7 @@ boxplot <- ggplot(d, aes(TYPE, DEPTH, fill = TYPE)) +
 # Save the boxplot
 ggsave("boxplot_DP_TYPE_log10.png", plot = boxplot)
 ```
+![Image of the boxplot](https://github.com/morenohugo/task4/blob/main/boxplot_DP_TYPE_log10.png)
 
 Violin plot
 ```R
